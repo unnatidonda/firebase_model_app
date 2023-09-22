@@ -78,7 +78,7 @@ class _SplashViewScreenState extends State<SplashViewScreen> with TickerProvider
               FadeTransition(
                 opacity: animation!,
                 child: const Text(
-                  "To Do App",
+                  "firebase model app",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,
