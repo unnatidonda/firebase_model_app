@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../home_view/home_screen.dart';
+import '../home/home_screen.dart';
 
 class SplashViewScreen extends StatefulWidget {
   const SplashViewScreen({super.key});
@@ -78,7 +78,7 @@ class _SplashViewScreenState extends State<SplashViewScreen> with TickerProvider
               FadeTransition(
                 opacity: animation!,
                 child: const Text(
-                  "firebase model app",
+                  "To Do App",
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.bold,

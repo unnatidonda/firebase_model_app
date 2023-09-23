@@ -1,5 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_model_app/splash_view/splash_view_screen.dart';
+import 'package:firebase_model_app/view/splash_view/splash_view_screen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
