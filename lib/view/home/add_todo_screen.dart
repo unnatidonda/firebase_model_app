@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import '../name_model.dart';
 
-class TodoScreen extends StatefulWidget {
-  const TodoScreen({super.key});
+class AddTodoScreeen extends StatefulWidget {
+  const AddTodoScreeen({super.key});
 
   @override
-  State<TodoScreen> createState() => _TodoScreenState();
+  State<AddTodoScreeen> createState() => _AddTodoScreeenState();
 }
 
-class _TodoScreenState extends State<TodoScreen> {
+class _AddTodoScreeenState extends State<AddTodoScreeen> {
   List<NamesModel> namesList = [
     NamesModel(name: "Unnati", age: 19, profession: "Developer", image: "kusch", details: Details(fathername: "nileshbhai")),
     NamesModel(name: "Monika", age: 19, profession: "Banker", details: Details(fathername: "")),
