@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,25 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
+  userData() {
+    try {
+      fireStore.collection('student').where("age").get().then((value) {
+        debugPrint("value.size------->${value.size}");
+
+        for (var data in value.docs) {
+          debugPrint("value.id------->${data.id}");
+          debugPrint("value.docs------->${data.data()}");
+        }
+      });
+    } on FirebaseException catch (error) {
+      debugPrint("Firebase error------->$error");
+    } catch (error) {
+      debugPrint("error------->$error");
+    }
+  }
+
   List<ToDoModelData> toDoModelList = []; // To Store List Of Map Data in List Of Model
 
   ToDoModelData? toDoModel; // To store map data in model
@@ -28,6 +48,7 @@ class _HomeViewState extends State<HomeView> {
 
     secondToDoModel = SecondToDoModel.fromJson(secondToDoData); // To convert map data in model with sub list of map to list of model and map to model converter
 
+    userData();
     super.initState();
   }
 
