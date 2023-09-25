@@ -39,41 +39,43 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
       });
     }
   }
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  setToDo(){
-    try{
+  setToDo() {
+    try {
       firestore.collection("ToDoFire").add({
-        "title":titleController.text.trim(),
-        "content":contentController.text.trim(),
-        "time":time,
-      }).then((value){
+        "title": titleController.text.trim(),
+        "content": contentController.text.trim(),
+        "time": time,
+      }).then((value) {
         Utils().showToastMessage(content: "ToDo successfully add");
-          Navigator.pop(context);
-
+        Navigator.pop(context);
       });
-    }
-    on FirebaseException catch (error){
+    } on FirebaseException catch (error) {
       debugPrint("Firebase error --------> $error");
-      Utils().showSnackBar(context: context,content:"Firebase error --------> $error" );
-    }catch(error){
-    Utils().showSnackBar(context: context,content:"Firebase error --------> $error" );
+      Utils().showSnackBar(context: context, content: "Firebase error --------> $error");
+    } catch (error) {
+      Utils().showSnackBar(context: context, content: "Firebase error --------> $error");
     }
   }
 
-
-  upDatToDo(){
-    try{
+  upDatToDo() {
+    try {
       firestore.collection("ToDoFire").doc(widget.id).update({
-        "title":titleController.text.trim(),
-        "content":contentController.text.trim(),
-        "time":time,
-      }).then((value)  {
-      Utils().showToastMessage(content: "ToDo successfully add");
-          Navigator.pop(context);
-
-    });
-  }
+        "title": titleController.text.trim(),
+        "content": contentController.text.trim(),
+        "time": time,
+      }).then((value) {
+        Utils().showToastMessage(content: "ToDo successfully add");
+        Navigator.pop(context);
+      });
+    } on FirebaseException catch (error) {
+      debugPrint("Firebase error --------> $error");
+      Utils().showSnackBar(context: context, content: "Firebase error --------> $error");
+    } catch (error) {
+      Utils().showSnackBar(context: context, content: " $error");
+    }
   }
 
   @override
