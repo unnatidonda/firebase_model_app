@@ -1,13 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_model_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/res/constant/constant.dart';
 import '../../model/to_do_model.dart';
 
 class AddEditToDoView extends StatefulWidget {
+  final ToDoModel? toDoModel;
+  final String? id;
   final int? index;
   const AddEditToDoView({
     super.key,
     this.index,
+    this.toDoModel,
+    this.id,
   });
 
   @override
@@ -32,6 +38,42 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
         time = timeData.format(context);
       });
     }
+  }
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  setToDo(){
+    try{
+      firestore.collection("ToDoFire").add({
+        "title":titleController.text.trim(),
+        "content":contentController.text.trim(),
+        "time":time,
+      }).then((value){
+        Utils().showToastMessage(content: "ToDo successfully add");
+          Navigator.pop(context);
+
+      });
+    }
+    on FirebaseException catch (error){
+      debugPrint("Firebase error --------> $error");
+      Utils().showSnackBar(context: context,content:"Firebase error --------> $error" );
+    }catch(error){
+    Utils().showSnackBar(context: context,content:"Firebase error --------> $error" );
+    }
+  }
+
+
+  upDatToDo(){
+    try{
+      firestore.collection("ToDoFire").doc(widget.id).update({
+        "title":titleController.text.trim(),
+        "content":contentController.text.trim(),
+        "time":time,
+      }).then((value)  {
+      Utils().showToastMessage(content: "ToDo successfully add");
+          Navigator.pop(context);
+
+    });
+  }
   }
 
   @override
@@ -179,7 +221,7 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
                     onPressed: () {
                       if (widget.index != null) {
                         //? To Edit to-do model in to-doModel list
-                        Constant.toDoModelList[widget.index!] = ToDoModelData(
+                        Constant.toDoModelList[widget.index!] = ToDoModel(
                           title: titleController.text,
                           content: contentController.text,
                           time: time,
@@ -188,7 +230,7 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
                       } else {
                         //? To add to-do model in to-doModel list
                         Constant.toDoModelList.add(
-                          ToDoModelData(
+                          ToDoModel(
                             title: titleController.text,
                             content: contentController.text,
                             time: time,
