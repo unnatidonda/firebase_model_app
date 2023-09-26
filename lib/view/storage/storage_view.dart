@@ -11,6 +11,7 @@ class StorageView extends StatefulWidget {
 }
 
 class _StorageViewState extends State<StorageView> {
+  fin
   final ImagePicker picker = ImagePicker();
   XFile? image;
 
