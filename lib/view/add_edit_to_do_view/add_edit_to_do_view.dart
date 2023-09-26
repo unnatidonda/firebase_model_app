@@ -1,29 +1,24 @@
+// !=
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_model_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
-import '../../data/res/constant/constant.dart';
 import '../../model/to_do_model.dart';
+import '../../utils/utils.dart';
 
 class AddEditToDoView extends StatefulWidget {
   final ToDoModel? toDoModel;
   final String? id;
-  final int? index;
-  const AddEditToDoView({
-    super.key,
-    this.index,
-    this.toDoModel,
-    this.id,
-  });
+
+  const AddEditToDoView({super.key, this.toDoModel, this.id});
 
   @override
   State<AddEditToDoView> createState() => _AddEditToDoViewState();
 }
 
 class _AddEditToDoViewState extends State<AddEditToDoView> {
-  String time = "";
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
+  String time = "";
 
   TimeOfDay timeOfDay = TimeOfDay.now();
   Future displayTimePicker(BuildContext context) async {
@@ -41,40 +36,42 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
   }
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-
-  setToDo() {
+  SetTodo() {
     try {
       firestore.collection("ToDoFire").add({
         "title": titleController.text.trim(),
         "content": contentController.text.trim(),
         "time": time,
-      }).then((value) {
-        Utils().showToastMessage(content: "ToDo successfully add");
-        Navigator.pop(context);
-      });
+      }).then(
+        (value) {
+          Utils().showToastMessage(content: "To Do successfully add");
+          Navigator.pop(context);
+        },
+      );
     } on FirebaseException catch (error) {
-      debugPrint("Firebase error --------> $error");
-      Utils().showSnackBar(context: context, content: "Firebase error --------> $error");
+      Utils().showSnackBar(context: context, content: "Firebase Error-->$error");
     } catch (error) {
-      Utils().showSnackBar(context: context, content: "Firebase error --------> $error");
+      Utils().showSnackBar(context: context, content: "$error");
     }
   }
 
-  upDatToDo() {
+  updateTodo() {
     try {
       firestore.collection("ToDoFire").doc(widget.id).update({
         "title": titleController.text.trim(),
         "content": contentController.text.trim(),
         "time": time,
-      }).then((value) {
-        Utils().showToastMessage(content: "ToDo successfully add");
-        Navigator.pop(context);
-      });
+      }).then(
+        (value) {
+          Utils().showToastMessage(content: "To Do successfully update");
+          Navigator.pop(context);
+        },
+      );
     } on FirebaseException catch (error) {
-      debugPrint("Firebase error --------> $error");
-      Utils().showSnackBar(context: context, content: "Firebase error --------> $error");
+      debugPrint("Firebase error------------>$error");
+      Utils().showSnackBar(context: context, content: "Firebase Error-->$error");
     } catch (error) {
-      Utils().showSnackBar(context: context, content: " $error");
+      Utils().showSnackBar(context: context, content: "$error");
     }
   }
 
@@ -82,12 +79,11 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
   void initState() {
     // TODO: implement initState
 
-    if (widget.index != null) {
-      titleController.text = Constant.toDoModelList[widget.index!].title!;
-      contentController.text = Constant.toDoModelList[widget.index!].content!;
-      time = Constant.toDoModelList[widget.index!].time!;
+    if (widget.toDoModel != null) {
+      titleController.text = widget.toDoModel!.title!;
+      contentController.text = widget.toDoModel!.title!;
+      time = widget.toDoModel!.time!;
     }
-
     super.initState();
   }
 
@@ -100,9 +96,8 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueAccent,
         title: Text(
-          widget.index == null ? "Add To-do" : "Edit To-Do",
+          widget.toDoModel == null ? "Add To-do" : "Edit To-Do",
           style: const TextStyle(
             color: Colors.black,
             fontSize: 26,
@@ -119,19 +114,19 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: TextField(
                   controller: titleController,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(22),
-                    isDense: true,
-                    hintText: "Unnati Donda",
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(width: 1, color: Colors.deepPurple),
                     ),
-                    filled: true,
-                    fillColor: Color(0xFFFFFFFF),
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.all(14),
-                    ),
+                    // contentPadding: const EdgeInsets.all(00),
+                    isDense: true,
+                    labelText: "title",
+                    hintText: "Enter title ",
+                    contentPadding: const EdgeInsets.all(12),
+                    hintStyle: const TextStyle(color: Color(0xFFB3B3B3), fontSize: 16, fontWeight: FontWeight.w400, fontFamily: "Poppins"),
                   ),
+                  onTap: () {},
                 ),
               ),
               const SizedBox(height: 25),
@@ -139,19 +134,19 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: TextField(
                   controller: contentController,
-                  decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(22),
-                    isDense: true,
-                    hintText: "contact",
+                  decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: const BorderSide(width: 1, color: Colors.deepPurple),
                     ),
-                    filled: true,
-                    fillColor: Color(0xFFFFFFFF),
-                    suffixIcon: Padding(
-                      padding: EdgeInsets.all(14),
-                    ),
+                    // contentPadding: const EdgeInsets.all(00),
+                    isDense: true,
+                    labelText: "contant",
+                    hintText: "Enter contant ",
+                    contentPadding: const EdgeInsets.all(30),
+                    hintStyle: const TextStyle(color: Color(0xFFB3B3B3), fontSize: 16, fontWeight: FontWeight.w400, fontFamily: "Poppins"),
                   ),
+                  onTap: () {},
                 ),
               ),
               const SizedBox(height: 15),
@@ -175,92 +170,19 @@ class _AddEditToDoViewState extends State<AddEditToDoView> {
                 ),
               ),
               SizedBox(height: screenHeight / 2),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(Colors.green),
-                      fixedSize: MaterialStatePropertyAll(
-                        Size(screenWidth / 2.3, screenHeight / 16),
-                      ),
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      ),
-                    ),
-                    // onPressed: onPress ?? () {},
-
-                    onPressed: () {},
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          textAlign: TextAlign.center,
-                          "Add",
-                          style: TextStyle(
-                            fontSize: 17,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w500,
-                            fontFamily: "Poppins",
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: const MaterialStatePropertyAll(Colors.green),
-                      fixedSize: MaterialStatePropertyAll(
-                        Size(screenWidth / 2.3, screenHeight / 16),
-                      ),
-                      shape: MaterialStatePropertyAll(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-                      ),
-                    ),
-                    // onPressed: onPress ?? () {},
-
-                    onPressed: () {
-                      if (widget.index != null) {
-                        //? To Edit to-do model in to-doModel list
-                        Constant.toDoModelList[widget.index!] = ToDoModel(
-                          title: titleController.text,
-                          content: contentController.text,
-                          time: time,
-                        );
-                        setState(() {});
-                      } else {
-                        //? To add to-do model in to-doModel list
-                        Constant.toDoModelList.add(
-                          ToDoModel(
-                            title: titleController.text,
-                            content: contentController.text,
-                            time: time,
-                          ),
-                        );
-                        setState(() {});
-                      }
-                      Navigator.pop(context);
-                    },
-                    child: Text(widget.index == null ? "Add To-do" : "Edit To-Do"),
-                  ),
-                  // child: const Row(
-                  //   mainAxisAlignment: MainAxisAlignment.center,
-                  //   children: [
-                  //     Text(
-                  //       textAlign: TextAlign.center,
-                  //       "Edit",
-                  //       style: TextStyle(
-                  //         fontSize: 17,
-                  //         color: Colors.white,
-                  //         fontWeight: FontWeight.w500,
-                  //         fontFamily: "Poppins",
-                  //       ),
-                  //     ),
-                  //   ],
-                  // ),
-                ],
-              )
+              const SizedBox(width: 10),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    if (widget.toDoModel == null) {
+                      SetTodo();
+                    } else {
+                      updateTodo();
+                    }
+                  },
+                  child: Text(widget.toDoModel == null ? "Add To-do" : "Edit To-Do"),
+                ),
+              ),
             ],
           ),
         ],
