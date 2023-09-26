@@ -28,6 +28,7 @@ class _StorageViewState extends State<StorageView> {
     try {
       Reference reference = FirebaseStorage.ref().child("image/123/12345678.png");
 
+      // Reference folderReference = reference.child("image");
       var link = await reference.getDownloadURL();
       debugPrint("Download link ----> $link");
     } on FirebaseException catch (error) {
