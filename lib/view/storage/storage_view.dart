@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_model_app/utils/utils.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +13,6 @@ class StorageView extends StatefulWidget {
 }
 
 class _StorageViewState extends State<StorageView> {
-  fin
   final ImagePicker picker = ImagePicker();
   XFile? image;
 
@@ -27,9 +28,12 @@ class _StorageViewState extends State<StorageView> {
 
   sendImage() async {
     try {
-      Reference reference = FirebaseStorage.ref().child("image/123/12345678.png");
+      Reference reference = firebaseStorage.ref().child("image/123/12345678.png");
+      await reference.putFile(File(image!.path)).then((value) async {
+        var link = await reference.getDownloadURL();
+        debugPrint("Download Link ----> $link ");
+      });
 
-      // Reference folderReference = reference.child("image");
       var link = await reference.getDownloadURL();
       debugPrint("Download link ----> $link");
     } on FirebaseException catch (error) {
@@ -43,15 +47,19 @@ class _StorageViewState extends State<StorageView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          ElevatedButton(
-            onPressed: () {
-              sendImage();
-            },
-            child: const Text("Select Image"),
-          ),
-        ],
+      body: Center(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                selectImage();
+              },
+              child: const Text("Select Image"),
+            ),
+          ],
+        ),
       ),
     );
   }
