@@ -37,7 +37,7 @@ class _StorageViewState extends State<StorageView> {
       var link = await reference.getDownloadURL();
       debugPrint("Download link ----> $link");
     } on FirebaseException catch (error) {
-      debugPrint("Firebase error ----> $error");
+      debugPrint("Firebase error ----> ");
       Utils().showSnackBar(context: context, content: "Firebase error ----> $error");
     } catch (error) {
       Utils().showSnackBar(context: context, content: "Error ----> $error");
