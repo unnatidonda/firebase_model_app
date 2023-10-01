@@ -54,7 +54,7 @@ class _StorageViewState extends State<StorageView> {
           children: [
             ElevatedButton(
               onPressed: () {
-                return selectImage();
+                selectImage();
               },
               child: const Text("Select Image"),
             ),
